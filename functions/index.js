@@ -8,12 +8,6 @@ admin.initializeApp();
 
 let database = admin.database();
 
-/** 
-const newCustomerFunc = require();
-const triggerCustomerPhone = require();
-const searchFunc = require()
-*/
-
 /**
  * newCustomerFunc - name, phone 입력 받아 ref 저장
  */
