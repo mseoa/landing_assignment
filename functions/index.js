@@ -8,6 +8,12 @@ admin.initializeApp();
 
 let database = admin.database();
 
+/** 
+const newCustomerFunc = require();
+const triggerCustomerPhone = require();
+const searchFunc = require()
+*/
+
 /**
  * newCustomerFunc - name, phone 입력 받아 ref 저장
  */
@@ -15,6 +21,21 @@ exports.newCustomerFunc = functions.https.onCall(async(data, context) => {
   // data: 클라이언트에서 전달한 데이터
   // context: 함수 호출에 대한 추가 정보 (사용자 인증, 사용자 UID 등)
     let { name, phone } = data
+
+    if (typeof name !== "string" || name.trim().length === 0) {
+        throw new functions.https.HttpsError(
+          "invalid-argument",
+          "name should be string"
+        );
+      }
+    
+    if (typeof phone !== "string" || phone.trim().length === 0) {
+    throw new functions.https.HttpsError(
+        "invalid-argument",
+        "phone should be string"
+    );
+    }
+
     let phoneInfo = phoneUtil(phone, { country: "KR" })
     if (!phoneInfo.isValid) {
         throw new functions.https.HttpsError(
@@ -82,10 +103,18 @@ exports.triggerCustomerPhone = functions.database.ref('dev-team-landing/customer
 )
 
 /**
- * searchFunc - phone 입력 받아 ref 검색하여 반환 
+ * searchFunc - phone 입력 받아 ref 검색하여 반환
+ * 
  */
 exports.searchFunc = functions.https.onCall(async (data, context) => {
     const { phone } = data;
+
+    if (typeof phone !== "string" || phone.trim().length === 0) {
+        throw new functions.https.HttpsError(
+            "invalid-argument",
+            "phone should be string"
+        );
+        }
 
     let phoneInfo = phoneUtil(phone, {country: "KR"})
 
